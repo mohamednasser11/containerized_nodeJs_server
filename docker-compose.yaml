@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  backend:
+    image: backend_api:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/backend
+    # Use the service name as the hostname
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    networks:
+      - localhost
+  mongo:
+    image: mongo:4.4 # You can use a specific version if needed
+    networks:
+      - localhost
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db # Mount a volume for MongoDB data
+
+networks:
+  localhost:
+
+
+volumes:
+  mongodata:
+    driver: local
